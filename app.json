@@ -5,7 +5,8 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "unimart",
+    "scheme": "uni-mart",
+    "owner": "prabodha123",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
