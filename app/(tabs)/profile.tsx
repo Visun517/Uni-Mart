@@ -1,7 +1,19 @@
 import CustomButton from "@/src/Components/CustomButton"
-import { View , Text, SafeAreaView } from "react-native"
+import { logoutUser } from "@/src/Service/AuthService";
+import { router } from "expo-router";
+import { View , Text, SafeAreaView, Alert } from "react-native"
 
 function Profile() {
+
+const handleLogout = async () => {
+    try {
+      await logoutUser();
+      router.replace("/register");
+    } catch (error) {
+      Alert.alert("Error", "Logout failed. Please try again.");
+    }
+  };
+  
   return (
      <SafeAreaView className="flex-1 bg-gray-100">
           <View className="items-center justify-center flex-1 px-6">
