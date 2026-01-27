@@ -1,5 +1,5 @@
 import { auth, db } from "../Config/firebaseConfig";
-import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, where, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, where, doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import Post from "../types/Post";
 
 // post save
@@ -35,18 +35,18 @@ export const PostSave = async (
 };
 
 // get all posts
-export const GetAllPosts = async () : Promise<Post[]> => {
+export const GetAllPosts = async (): Promise<Post[]> => {
   try {
     const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
-    
+
     const posts = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     })) as Post[];
-    
+
     return posts;
-    
+
   } catch (error) {
     console.error("Error getting all posts: ", error);
     throw error;
@@ -54,22 +54,22 @@ export const GetAllPosts = async () : Promise<Post[]> => {
 };
 
 // get post by user
-export const GetUserPosts = async () => {
+export const GetUserPosts = async (): Promise<Post[]> => {
   try {
     const user = auth.currentUser;
     if (!user) throw new Error("User not authenticated");
 
     const q = query(
-      collection(db, "posts"), 
+      collection(db, "posts"),
       where("sellerId", "==", user.uid),
       orderBy("createdAt", "desc")
     );
-    
+
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    }));
+    })) as Post[];
   } catch (error) {
     console.error("Error getting user posts: ", error);
     throw error;
@@ -98,6 +98,25 @@ export const DeletePost = async (postId: string) => {
     return true;
   } catch (error) {
     console.error("Error deleting document: ", error);
+    throw error;
+  }
+};
+
+
+export const GetPostById = async (postId: string): Promise<Post | null> => {
+  try {
+    const postRef = doc(db, "posts", postId);
+
+    const postSnap = await getDoc(postRef);
+
+    if (postSnap.exists()) {
+      return { id: postSnap.id, ...postSnap.data() } as Post;
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting post by ID: ", error);
     throw error;
   }
 };

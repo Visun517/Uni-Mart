@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 
 export default function ListingLayout() {
-    return (
+  return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="[id]" />
       <Stack.Screen name="edit-[id]" />

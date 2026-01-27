@@ -127,7 +127,7 @@ function AddItem() {
     }
   };
   return (
-    <SafeAreaView className="flex-1 bg-white mt-5">
+    <SafeAreaView className="flex-1 bg-white ">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
@@ -138,7 +138,7 @@ function AddItem() {
           className="px-6"
         >
           {/* 1. Header Section */}
-          <View className="mt-8 mb-8">
+          <View className="mt-14 mb-8">
             <Text className="text-4xl font-black text-gray-900 tracking-tight">
               Create Ad
             </Text>
