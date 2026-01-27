@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -12,17 +12,16 @@ import {
 import { GetAllPosts } from "@/src/Service/PostService";
 import Post from "../../src/types/Post";
 import PostCard from "@/src/Components/PostCard";
-import { router } from "expo-router";
-import { Search, Bell, SlidersHorizontal } from "lucide-react-native";
+import { Search, Bell } from "lucide-react-native";
 import { useAuth } from "@/src/Context/AuthContext";
+import { useRouter } from "expo-router";
 
 function Home() {
   const { user } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
-  // Filtering States
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -40,7 +39,7 @@ function Home() {
       const data = await GetAllPosts();
       setPosts(data);
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching posts:", error);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -56,26 +55,27 @@ function Home() {
     fetchPosts();
   };
 
-  const filteredPosts = posts.filter((post) => {
-    const matchesCategory =
-      selectedCategory === "All" || post.category === selectedCategory;
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.desc.toLowerCase().includes(searchQuery.toLowerCase());
-
-    return matchesCategory && matchesSearch;
-  });
+  // Filter Logic
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      const isNotMine = post.sellerId !== user?.uid;
+      const matchesCategory =
+        selectedCategory === "All" || post.category === selectedCategory;
+      const matchesSearch = post.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      return isNotMine && matchesCategory && matchesSearch;
+    });
+  }, [posts, selectedCategory, searchQuery]);
 
   return (
-    <SafeAreaView className="flex-1 bg-white mt-7">
-      <View className="px-6 flex-1 pt-4">
-        {/* 1. Header Section */}
+    <SafeAreaView className="flex-1 bg-white pt-10 mt-2">
+      <View className="px-6 flex-1">
+        {/* Header */}
         <View className="flex-row justify-between items-center mb-6">
           <View>
-            <Text className="text-gray-400 font-medium text-base">
-              Hello, 👋
-            </Text>
-            <Text className="text-2xl font-black text-slate-900 leading-7">
+            <Text className="text-gray-400 font-medium">Hello, 👋</Text>
+            <Text className="text-2xl font-black text-slate-900">
               {user?.displayName || "Uni-Mart User"}
             </Text>
           </View>
@@ -84,35 +84,31 @@ function Home() {
           </TouchableOpacity>
         </View>
 
-        {/* 2. Modern Search Bar */}
-        <View className="flex-row items-center space-x-3 mb-6 gap-3">
-          <View className="flex-1 flex-row items-center bg-slate-100 px-4 h-14 rounded-2xl">
-            <Search size={20} color="#94a3b8" />
-            <TextInput
-              placeholder="Search items..."
-              className="flex-1 ml-3 text-slate-900 font-medium h-full"
-              placeholderTextColor="#94a3b8"
-              value={searchQuery}
-              onChangeText={(text) => setSearchQuery(text)}
-            />
-          </View>
-          <TouchableOpacity className="bg-blue-600 p-4 rounded-2xl shadow-lg shadow-blue-200">
-            <SlidersHorizontal size={20} color="white" />
-          </TouchableOpacity>
+        {/* Search Bar */}
+        <View className="flex-row items-center bg-slate-100 px-4 h-14 rounded-2xl mb-6">
+          <Search size={20} color="#94a3b8" />
+          <TextInput
+            placeholder="Search items..."
+            className="flex-1 ml-3 text-slate-900 font-medium h-full"
+            placeholderTextColor="#94a3b8"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
         </View>
 
-        {/* 3. Horizontal Categories */}
+        {/* Categories */}
         <View className="mb-6">
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
             data={categories}
+            keyExtractor={(item) => item}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => setSelectedCategory(item)}
                 className={`px-6 py-3 rounded-2xl mr-3 ${
                   selectedCategory === item
-                    ? "bg-blue-600 shadow-lg shadow-blue-200"
+                    ? "bg-blue-600"
                     : "bg-slate-50 border border-slate-100"
                 }`}
               >
@@ -123,45 +119,32 @@ function Home() {
                 </Text>
               </TouchableOpacity>
             )}
-            keyExtractor={(item) => item}
           />
         </View>
 
-        {/* 4. Results Info */}
-        <View className="flex-row justify-between items-end mb-4 px-1">
-          <Text className="text-xl font-black text-slate-900">
-            {searchQuery ? "Search Results" : "Recent Ads"}
-          </Text>
-          <Text className="text-gray-400 font-bold text-xs">
-            {filteredPosts.length} Items Found
-          </Text>
-        </View>
-
-        {/* 5. The Posts Grid */}
+        {/* List */}
         {loading ? (
-          <View className="flex-1 justify-center">
-            <ActivityIndicator size="large" color="#2563eb" />
-          </View>
+          <ActivityIndicator size="large" color="#2563eb" className="mt-10" />
         ) : (
           <FlatList
             data={filteredPosts}
             keyExtractor={(item) => item.id}
             numColumns={2}
             columnWrapperStyle={{ justifyContent: "space-between" }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderItem={({ item }) => (
               <PostCard
                 post={item}
                 onPress={() => router.push(`/listing/${item.id}`)}
               />
             )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
             ListEmptyComponent={
               <View className="mt-10 items-center">
-                <Text className="text-gray-400 font-medium">
+                <Text className="text-gray-400">
                   No items match your criteria.
                 </Text>
               </View>

@@ -1,18 +1,18 @@
-import { AuthProvider } from "@/src/Context/AuthContext";
-import { Slot } from "expo-router";
-import { View } from "react-native";
-import { SafeAreaFrameContext } from "react-native-safe-area-context";
+import { Stack } from 'expo-router';
+import { AuthProvider } from '../src/Context/AuthContext';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-function _layout() {
+export default function RootLayout() {
   return (
-    <SafeAreaFrameContext value={null}>
+    <SafeAreaProvider>
       <AuthProvider>
-      <View style={{ marginTop: 0, flex: 1 }}>
-        <Slot />
-      </View>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="listing" options={{ headerShown: false }} /> 
+        </Stack>
       </AuthProvider>
-    </SafeAreaFrameContext>
+    </SafeAreaProvider>
   );
 }
-
-export default _layout;

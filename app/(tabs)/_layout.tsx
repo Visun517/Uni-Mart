@@ -1,24 +1,23 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Tabs, useRouter } from "expo-router";
+import { Tabs } from "expo-router";
 import React from "react";
-import { SafeAreaFrameContext } from "react-native-safe-area-context";
 
-function _layout() {
+export default function TabLayout() {
   const tabs = [
-  { name: "home", label: "Home", icon: "storefront" }, 
-  { name: "add-item", label: "Add", icon: "add-circle-outline" },
-  { name: "my-adds", label: "My Adds", icon: "sell" }, 
-  { name: "profile", label: "Profile", icon: "person" },
-] as const;
+    { name: "home", label: "Home", icon: "storefront" }, 
+    { name: "add-item", label: "Add", icon: "add-circle-outline" },
+    { name: "my-adds", label: "My Adds", icon: "sell" }, 
+    { name: "profile", label: "Profile", icon: "person" },
+  ] as const;
 
   return (
-    <SafeAreaFrameContext value={null}>
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#2563eb' }}>
       {tabs.map((tab) => (
         <Tabs.Screen
           key={tab.name}
           name={tab.name}
           options={{
+            title: tab.label,
             tabBarIcon: ({ color, size }) => (
               <MaterialIcons name={tab.icon} color={color} size={size} />
             ),
@@ -26,8 +25,5 @@ function _layout() {
         />
       ))}
     </Tabs>
-    </SafeAreaFrameContext>
   );
 }
-
-export default _layout;
