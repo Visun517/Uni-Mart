@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TextInput, TextInputProps } from "react-native";
 
 interface CustomInputProps extends TextInputProps {
-  label: string;
+  label?: string;
   icon?: React.ReactNode;
 }
 

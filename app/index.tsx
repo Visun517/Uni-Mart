@@ -4,16 +4,6 @@ import { Redirect } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 function index() {
   const { user, loading } = useAuth();
-
-  console.log(
-    "Index Render - Loading:",
-    loading,
-    "User:",
-    user ? "Logged In" : "Null",
-  );
-
-  console.log(user)
-
   if (loading) {
     return (
       <View className="items-center justify-center flex-1 bg-gray-50">
