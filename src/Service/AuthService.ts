@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, updateProfile,signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "../Config/firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 
@@ -48,4 +48,10 @@ export const logoutUser = async () => {
 export const loginWithGoogle = async (idToken: string) => {
   const credential = GoogleAuthProvider.credential(idToken);
   return await signInWithCredential(auth, credential);
+};
+
+
+export const UpdateUserProfile = async (uid: string, data: any) => {
+  const userRef = doc(db, "users", uid);
+  return await updateDoc(userRef, data);
 };
