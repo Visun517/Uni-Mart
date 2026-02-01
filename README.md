@@ -1,6 +1,7 @@
-````md
-# 🛒 Uni-Mart  
+# 🛒 Uni-Mart
 ### University Marketplace Mobile Application
+
+---
 
 ## 📌 Project Overview
 
@@ -46,21 +47,11 @@ The application is developed using **Expo (React Native)** with **Firebase**, **
 ```bash
 git clone https://github.com/Visun517/Uni-Mart.git
 cd Uni-Mart
-```
-
-### 2️⃣ Install Dependencies
-
-```bash
+2️⃣ Install Dependencies
 npm install
-```
+🔐 Environment Variables Setup
+Create a .env file in the root directory and add the following:
 
----
-
-## 🔐 Environment Variables Setup
-
-Create a `.env` file in the **root directory** and add the following:
-
-```env
 # Firebase Config
 EXPO_PUBLIC_API_KEY=your_firebase_key
 EXPO_PUBLIC_AUTH_DOMAIN=uni-mart-fc8bb.firebaseapp.com
@@ -77,33 +68,18 @@ EXPO_PUBLIC_IOS_CLIENT_ID=your_google_ios_id.apps.googleusercontent.com
 # Cloudinary
 EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=uni-mart
-```
+⚠️ Important
 
-⚠️ **Important**
+Do NOT push the .env file to GitHub
 
-* Do **NOT** push the `.env` file to GitHub
-* Add `.env` to your `.gitignore` file
+Add .env to your .gitignore file
 
----
-
-## ▶️ Run the Application
-
-```bash
+▶️ Run the Application
 npx expo start -c
-```
-
-### 📱 Physical Device Testing
-
-```bash
+📱 Physical Device Testing
 npx expo start --tunnel
-```
-
----
-
-## 📂 Project Structure
-
-```text
-├── app/                  
+📂 Project Structure
+├── app/
 │   ├── (auth)/           # Login & Register Screens
 │   ├── (tabs)/           # Home, Add Item, My Ads, Profile
 │   ├── listing/          # Dynamic Routes (View/Edit Ads)
@@ -118,32 +94,19 @@ npx expo start --tunnel
 │   └── types/            # TypeScript Interfaces
 │
 └── tailwind.config.js    # NativeWind Configuration
-```
----
+🧪 Testing
+Manual UI Testing
 
-## 🧪 Testing
+Firebase Authentication Validation
 
-* Manual UI Testing
-* Firebase Authentication Validation
-* Cloudinary Upload Verification
-* Expo Device Testing (Android)
+Cloudinary Upload Verification
 
----
+Expo Device Testing (Android)
 
-## 👨‍💻 Developed By
-
-**Visun Prabodha**
+👨‍💻 Developed By
+Visun Prabodha
 🎓 Advanced Mobile Application Development
 🏫 University Project
 
----
-
-## ⭐ Support
-
-If you find this project useful, please give it a **star ⭐** on GitHub.
-
-
-
-
-
-
+⭐ Support
+If you find this project useful, please give it a star ⭐ on GitHub.
