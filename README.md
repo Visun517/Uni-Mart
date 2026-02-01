@@ -1,65 +1,82 @@
-code
-Markdown
-# 🎓 Uni-Mart: Campus Marketplace Mobile App
+හරි 👍
+ඔයා දීපු **මේ details ටික ඔක්කොම correctly structure කරලා**, Markdown errors නැතිව, **GitHub-ready COMPLETE README.md** එකක් මම පහළින් හදලා දෙනවා.
 
-**Uni-Mart** is a modern, high-performance mobile application exclusively designed for university students. It serves as a secure and efficient platform to buy and sell campus essentials like textbooks, electronics, and furniture within the university community.
-
----
-
-## 🚀 Key Features
-
-### 🔐 Secure Authentication
-*   **Firebase Integration:** Robust Email/Password registration and login.
-*   **Social Logins:** One-tap sign-in with **Google** and **Facebook** using Expo Auth Session and Firebase.
-
-### 📦 Dynamic Item Listings (CRUD)
-*   **Create:** Post advertisements with high-quality images, titles, prices, and categories.
-*   **Read:** Browse all listings on a modern home screen or view detailed item pages.
-*   **Update:** Edit existing ads to keep information current (Title, Price, Image, etc.).
-*   **Delete:** Remove sold or unwanted advertisements instantly.
-
-### 🖼️ Advanced Media Handling
-*   **Camera & Gallery:** Seamlessly capture or pick images using `expo-image-picker`.
-*   **Cloudinary Hosting:** Fast, optimized image uploads using **Cloudinary Unsigned Presets**, ensuring a lag-free experience without a heavy backend.
-
-### 🔍 Smart Search & Filtering
-*   **Real-time Search:** Instantly find items by keywords.
-*   **Category Chips:** Horizontal category filtering (Electronics, Books, Fashion, Furniture, etc.) for quick browsing.
-
-### 📱 User Interaction
-*   **Direct Calling:** Integrated "Call Seller" feature using the React Native Linking API.
-*   **My Ads Dashboard:** A dedicated space for users to manage their own listings and track their sales.
+👉 **මේක direct copy → README.md**
+👉 Extra edit කරන්න කිසිදේක් ඕන නෑ
 
 ---
 
-## 🛠️ Technical Stack
+````md
+# 🛒 Uni-Mart  
+### University Marketplace Mobile Application
 
-*   **Framework:** [React Native](https://reactnative.dev/) with [Expo SDK 51+](https://expo.dev/)
-*   **Navigation:** [Expo Router](https://docs.expo.dev/router/introduction/) (File-based Routing)
-*   **Language:** [TypeScript](https://www.typescriptlang.org/)
-*   **Styling:** [NativeWind](https://www.nativewind.dev/) (Tailwind CSS for React Native)
-*   **Backend & Database:** [Firebase](https://firebase.google.com/) (Firestore & Authentication)
-*   **Image Storage:** [Cloudinary](https://cloudinary.com/)
-*   **Icons:** [Lucide React Native](https://lucide.dev/) & [Material Icons](https://icons.expo.fyi/)
+![Expo](https://img.shields.io/badge/Expo-React%20Native-blue)
+![Firebase](https://img.shields.io/badge/Firebase-Authentication-orange)
+![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
+![Cloudinary](https://img.shields.io/badge/Cloudinary-Image%20Upload-lightblue)
+![Status](https://img.shields.io/badge/Status-Completed-success)
+
+---
+
+## 📌 Project Overview
+
+**Uni-Mart** is a mobile marketplace application designed specifically for **university students**.  
+It enables students to **buy, sell, and manage second-hand or new items** within a secure and user-friendly environment.
+
+The application is developed using **Expo (React Native)** with **Firebase**, **Cloudinary**, and **Expo Router**, following modern mobile application development best practices.
+
+---
+
+## 🚀 Features
+
+- 🔐 Firebase Authentication (Email & Google OAuth)
+- 🏠 Home feed with item listings
+- ➕ Create, edit & delete advertisements
+- 🖼️ Image upload using Cloudinary
+- 👤 User profile & ad management
+- 📄 Dynamic item detail pages
+- 📱 Mobile-optimized UI
+- ⚡ File-based routing using Expo Router
+- 🎨 Tailwind-style UI with NativeWind
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|--------|------------|
+| Mobile Framework | Expo (React Native) |
+| Language | TypeScript |
+| Routing | Expo Router |
+| Authentication | Firebase Auth |
+| Database | Firebase |
+| Image Hosting | Cloudinary |
+| Styling | NativeWind (Tailwind CSS) |
+| State Management | React Context API |
 
 ---
 
 ## 📦 Installation & Setup
 
-### 1. Clone the repository
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/Visun517/Uni-Mart.git
 cd Uni-Mart
+````
 
-2. Install dependencies
+### 2️⃣ Install Dependencies
+
 ```bash
 npm install
+```
 
-3. Setup Environment Variables
-Create a .env file in the root directory and add your credentials:
+---
 
-Env
+## 🔐 Environment Variables Setup
 
+Create a `.env` file in the **root directory** and add the following:
+
+```env
 # Firebase Config
 EXPO_PUBLIC_API_KEY=your_firebase_key
 EXPO_PUBLIC_AUTH_DOMAIN=uni-mart-fc8bb.firebaseapp.com
@@ -76,47 +93,88 @@ EXPO_PUBLIC_IOS_CLIENT_ID=your_google_ios_id.apps.googleusercontent.com
 # Cloudinary
 EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=uni-mart
+```
+
+⚠️ **Important**
+
+* Do **NOT** push the `.env` file to GitHub
+* Add `.env` to your `.gitignore` file
 
 ---
 
-4. Start the application
-code
-Bash
+## ▶️ Run the Application
+
+```bash
 npx expo start -c
+```
 
-Tip: Use npx expo start --tunnel to test on a physical device across different networks.
+### 📱 Physical Device Testing
+
+```bash
+npx expo start --tunnel
+```
 
 ---
 
-📂 Project Structure
-code
-Text
-├── app/                  # Main application routes (Expo Router)
-│   ├── (auth)/           # Login and Register screens
-│   ├── (tabs)/           # Tab navigation (Home, Add Item, My Ads, Profile)
-│   ├── listing/          # Dynamic routes: [id].tsx (View) & edit-[id].tsx (Edit)
-│   ├── _layout.tsx       # Root layout with SafeArea & Auth Providers
-│   └── index.tsx         # App entry point with Auth Redirect Logic
+## 📂 Project Structure
+
+```text
+├── app/                  
+│   ├── (auth)/           # Login & Register Screens
+│   ├── (tabs)/           # Home, Add Item, My Ads, Profile
+│   ├── listing/          # Dynamic Routes (View/Edit Ads)
+│   ├── _layout.tsx       # Root Layout & Providers
+│   └── index.tsx         # Entry Point with Auth Redirect
+│
 ├── src/
-│   ├── Components/       # Reusable UI (PostCard, InputField, CustomButton)
-│   ├── Context/          # AuthContext for global user & loading state
-│   ├── hooks/            # Custom hooks (useAuth, useLoader)
-│   ├── Service/          # Firebase, Post, and Cloudinary services
-│   └── types/            # TypeScript interfaces (Post.ts, User.ts)
-└── tailwind.config.js    # NativeWind configuration
+│   ├── Components/       # Reusable UI Components
+│   ├── Context/          # Global Auth Context
+│   ├── hooks/            # Custom Hooks
+│   ├── Service/          # Firebase & Cloudinary Services
+│   └── types/            # TypeScript Interfaces
+│
+└── tailwind.config.js    # NativeWind Configuration
+```
 
 ---
 
-📸 Screenshots
+## 📸 Screenshots
 
-Home Screen	Item Details	Create Ad
-
-![alt text](https://via.placeholder.com/200x400?text=Home+Screen)
-![alt text](https://via.placeholder.com/200x400?text=Item+Details)
-![alt text](https://via.placeholder.com/200x400?text=Create+Ad)
+| Home Screen                     | Item Details                          | Create Ad                           |
+| ------------------------------- | ------------------------------------- | ----------------------------------- |
+| ![Home](./screenshots/home.png) | ![Details](./screenshots/details.png) | ![Create](./screenshots/create.png) |
 
 ---
 
-👨‍💻 Developed By
-Visun Prabodha
-Advanced Mobile Application Development - University Project
+## 🧪 Testing
+
+* Manual UI Testing
+* Firebase Authentication Validation
+* Cloudinary Upload Verification
+* Expo Device Testing (Android)
+
+---
+
+## 👨‍💻 Developed By
+
+**Visun Prabodha**
+🎓 Advanced Mobile Application Development
+🏫 University Project
+
+---
+
+## ⭐ Support
+
+If you find this project useful, please give it a **star ⭐** on GitHub.
+
+---
+
+## 📄 License
+
+This project is developed **for educational purposes only**.
+
+```
+
+
+
+
