@@ -62,7 +62,7 @@ The application is developed using **Expo (React Native)** with **Firebase**, **
 ```bash
 git clone https://github.com/Visun517/Uni-Mart.git
 cd Uni-Mart
-````
+```
 
 ### 2️⃣ Install Dependencies
 
