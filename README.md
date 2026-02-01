@@ -1,22 +1,6 @@
-හරි 👍
-ඔයා දීපු **මේ details ටික ඔක්කොම correctly structure කරලා**, Markdown errors නැතිව, **GitHub-ready COMPLETE README.md** එකක් මම පහළින් හදලා දෙනවා.
-
-👉 **මේක direct copy → README.md**
-👉 Extra edit කරන්න කිසිදේක් ඕන නෑ
-
----
-
 ````md
 # 🛒 Uni-Mart  
 ### University Marketplace Mobile Application
-
-![Expo](https://img.shields.io/badge/Expo-React%20Native-blue)
-![Firebase](https://img.shields.io/badge/Firebase-Authentication-orange)
-![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
-![Cloudinary](https://img.shields.io/badge/Cloudinary-Image%20Upload-lightblue)
-![Status](https://img.shields.io/badge/Status-Completed-success)
-
----
 
 ## 📌 Project Overview
 
@@ -68,7 +52,7 @@ cd Uni-Mart
 
 ```bash
 npm install
-````
+```
 
 ---
 
@@ -135,15 +119,6 @@ npx expo start --tunnel
 │
 └── tailwind.config.js    # NativeWind Configuration
 ```
-
----
-
-## 📸 Screenshots
-
-| Home Screen                     | Item Details                          | Create Ad                           |
-| ------------------------------- | ------------------------------------- | ----------------------------------- |
-| ![Home](./screenshots/home.png) | ![Details](./screenshots/details.png) | ![Create](./screenshots/create.png) |
-
 ---
 
 ## 🧪 Testing
@@ -167,13 +142,7 @@ npx expo start --tunnel
 
 If you find this project useful, please give it a **star ⭐** on GitHub.
 
----
 
-## 📄 License
-
-This project is developed **for educational purposes only**.
-
-```
 
 
 
