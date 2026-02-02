@@ -81,6 +81,7 @@ EXPO_PUBLIC_IOS_CLIENT_ID=your_google_ios_id.apps.googleusercontent.com
 EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=uni-mart
 ```
+---
 
 ⚠️ Important
 
@@ -99,6 +100,8 @@ npx expo start -c
 ```bash
 npx expo start --tunnel
 ```
+
+---
 
 ### 📂 Project Structure
 
@@ -131,6 +134,8 @@ npx expo start --tunnel
 - Cloudinary Upload Verification
 
 - Expo Device Testing (Android)
+
+---
 
 ### 👨‍💻 Developed By
 
