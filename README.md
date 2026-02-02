@@ -47,8 +47,11 @@ The application is developed using **Expo (React Native)** with **Firebase**, **
 ```bash
 git clone https://github.com/Visun517/Uni-Mart.git
 cd Uni-Mart
+```
+
 2️⃣ Install Dependencies
-npm install
+npm 
+
 🔐 Environment Variables Setup
 Create a .env file in the root directory and add the following:
 
@@ -76,8 +79,10 @@ Add .env to your .gitignore file
 
 ▶️ Run the Application
 npx expo start -c
+
 📱 Physical Device Testing
 npx expo start --tunnel
+
 📂 Project Structure
 ├── app/
 │   ├── (auth)/           # Login & Register Screens
@@ -94,6 +99,7 @@ npx expo start --tunnel
 │   └── types/            # TypeScript Interfaces
 │
 └── tailwind.config.js    # NativeWind Configuration
+
 🧪 Testing
 Manual UI Testing
 
