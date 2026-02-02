@@ -1,4 +1,5 @@
 # 🛒 Uni-Mart
+
 ### University Marketplace Mobile Application
 
 ---
@@ -6,7 +7,7 @@
 ## 📌 Project Overview
 
 **Uni-Mart** is a mobile marketplace application designed specifically for **university students**.  
-It enables students to **buy, sell, and manage second-hand or new items** within a secure and user-friendly environment.
+ It enables students to **buy, sell, and manage second-hand or new items** within a secure and user-friendly environment.
 
 The application is developed using **Expo (React Native)** with **Firebase**, **Cloudinary**, and **Expo Router**, following modern mobile application development best practices.
 
@@ -28,33 +29,41 @@ The application is developed using **Expo (React Native)** with **Firebase**, **
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|--------|------------|
-| Mobile Framework | Expo (React Native) |
-| Language | TypeScript |
-| Routing | Expo Router |
-| Authentication | Firebase Auth |
-| Database | Firebase |
-| Image Hosting | Cloudinary |
-| Styling | NativeWind (Tailwind CSS) |
-| State Management | React Context API |
+| Category         | Technology                |
+| ---------------- | ------------------------- |
+| Mobile Framework | Expo (React Native)       |
+| Language         | TypeScript                |
+| Routing          | Expo Router               |
+| Authentication   | Firebase Auth             |
+| Database         | Firebase                  |
+| Image Hosting    | Cloudinary                |
+| Styling          | NativeWind (Tailwind CSS) |
+| State Management | React Context API         |
 
 ---
 
 ## 📦 Installation & Setup
 
 ### 1️⃣ Clone the Repository
+
 ```bash
 git clone https://github.com/Visun517/Uni-Mart.git
 cd Uni-Mart
 ```
 
-2️⃣ Install Dependencies
-npm 
+### 2️⃣ Install Dependencies
 
-🔐 Environment Variables Setup
+```bash
+npm install
+```
+
+---
+
+### 🔐 Environment Variables Setup
+
 Create a .env file in the root directory and add the following:
 
+```bash
 # Firebase Config
 EXPO_PUBLIC_API_KEY=your_firebase_key
 EXPO_PUBLIC_AUTH_DOMAIN=uni-mart-fc8bb.firebaseapp.com
@@ -71,19 +80,29 @@ EXPO_PUBLIC_IOS_CLIENT_ID=your_google_ios_id.apps.googleusercontent.com
 # Cloudinary
 EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=uni-mart
+```
+
 ⚠️ Important
 
-Do NOT push the .env file to GitHub
+ - Do NOT push the .env file to GitHub
 
-Add .env to your .gitignore file
+ - Add .env to your .gitignore file
 
-▶️ Run the Application
+### ▶️ Run the Application
+
+```bash
 npx expo start -c
+```
 
-📱 Physical Device Testing
+### 📱 Physical Device Testing
+
+```bash
 npx expo start --tunnel
+```
 
-📂 Project Structure
+### 📂 Project Structure
+
+```bash
 ├── app/
 │   ├── (auth)/           # Login & Register Screens
 │   ├── (tabs)/           # Home, Add Item, My Ads, Profile
@@ -99,20 +118,26 @@ npx expo start --tunnel
 │   └── types/            # TypeScript Interfaces
 │
 └── tailwind.config.js    # NativeWind Configuration
+```
 
-🧪 Testing
-Manual UI Testing
+---
 
-Firebase Authentication Validation
+### 🧪 Testing
 
-Cloudinary Upload Verification
+- Manual UI Testing
 
-Expo Device Testing (Android)
+- Firebase Authentication Validation
 
-👨‍💻 Developed By
+- Cloudinary Upload Verification
+
+- Expo Device Testing (Android)
+
+### 👨‍💻 Developed By
+
 Visun Prabodha
 🎓 Advanced Mobile Application Development
 🏫 University Project
 
-⭐ Support
+### ⭐ Support
+
 If you find this project useful, please give it a star ⭐ on GitHub.
