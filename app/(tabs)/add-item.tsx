@@ -11,23 +11,24 @@ import {
   Alert,
   Modal,
   FlatList,
+  StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import {
   Camera,
-  Image as ImageIcon,
   ChevronDown,
   X,
   Phone,
   Tag,
   DollarSign,
   Type,
+  Hexagon,
+  AlignLeft,
 } from "lucide-react-native";
 import InputField from "@/src/Components/InputField";
 import CustomButton from "@/src/Components/CustomButton";
 import { router } from "expo-router";
-import { auth, storage } from "@/src/Config/firebaseConfig";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { PostSave } from "@/src/Service/PostService";
 import { uploadImageToCloudinary } from "@/src/Service/CloudinaryService";
 
@@ -35,13 +36,22 @@ function AddItem() {
   const [image, setImage] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  const [number , setNumber] = useState("");
+  const [number, setNumber] = useState("");
   const [description, setDescription] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [category, setCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // (Camera or Gallery)
+  const categories = [
+    "Electronics",
+    "Fashion & Clothing",
+    "Books & Study Material",
+    "Musical Instruments",
+    "Furniture",
+    "Vehicles & Accessories",
+    "Other",
+  ];
+
   const pickImage = async () => {
     Alert.alert("Select Image", "Choose a method to upload your item image", [
       {
@@ -74,192 +84,195 @@ function AddItem() {
     ]);
   };
 
-  const categories = [
-    "Electronics",
-    "Fashion & Clothing",
-    "Books & Study Material",
-    "Musical Instruments",
-    "Furniture",
-    "Vehicles & Accessories",
-    "Other",
-  ];
-
-
   const handlePostItem = async () => {
-    // 1 (Validation)
     if (!image || !title || !price || !category || !description || !number) {
-      Alert.alert("Error", "Please fill all fields and select an image.");
+      Alert.alert("Missing Fields", "Please fill all fields and select an image to continue.");
       return;
     }
 
-    setIsLoading(true); // Loading
+    setIsLoading(true);
 
     try {
       const downloadURL = await uploadImageToCloudinary(image);
+      if (!downloadURL) throw new Error("Image upload failed.");
 
-      if (!downloadURL) {
-        throw new Error("Failed to upload image to Cloudinary.");
-      }
+      await PostSave(title, parseFloat(price), category, description, downloadURL, number);
 
-      await PostSave(
-        title,
-        parseFloat(price), 
-        category,
-        description,
-        downloadURL,
-        number
-      );
-
-      Alert.alert("Success", "Your item has been posted successfully!");
-
+      Alert.alert("Success 🎉", "Your advertisement has been published successfully!");
+      
+      // Reset Form
       setImage(null);
       setTitle("");
       setPrice("");
       setCategory("");
       setDescription("");
+      setNumber("");
       router.replace("/home");
 
     } catch (error: any) {
       console.error("Post Error:", error);
-      Alert.alert("Post Failed", error.message || "Something went wrong.");
+      Alert.alert("Error", error.message || "Could not post your item. Please try again.");
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
+
   return (
-    <SafeAreaView className="flex-1 bg-white ">
+    <View className="flex-1 bg-white">
+      <StatusBar barStyle="light-content" backgroundColor="#1A3BA0" />
+
+      {/* --- 1. Top Branded Header --- */}
+      <View className="bg-[#1A3BA0] pt-14 pb-20 px-8 rounded-b-[45px] shadow-2xl">
+        <View className="flex-row items-center">
+          <View className="p-2 mr-4 border bg-white/10 rounded-xl border-white/20">
+            <Hexagon size={28} color="white" />
+          </View>
+          <View>
+            <Text className="text-3xl font-black tracking-tight text-white">Create Ad</Text>
+            <Text className="mt-1 text-sm font-medium tracking-widest uppercase text-blue-100/70">
+              Post your item for sale
+            </Text>
+          </View>
+        </View>
+      </View>
+
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
+        className="flex-1 -mt-12"
       >
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 30 }}
+          contentContainerStyle={{ paddingBottom: 40 }}
           className="px-6"
         >
-          {/* 1. Header Section */}
-          <View className="mt-14 mb-8">
-            <Text className="text-4xl font-black text-gray-900 tracking-tight">
-              Create Ad
-            </Text>
-            <Text className="text-gray-400 text-lg mt-1">
-              List your item in the Uni-Mart
-            </Text>
-          </View>
-
-          {/* 2. Image Picker Section - මීට වඩා Premium පෙනුමක් ලබා දී ඇත */}
+          {/* --- 2. Image Picker Container --- */}
           <TouchableOpacity
             onPress={pickImage}
-            activeOpacity={0.8}
-            className="w-full h-72 bg-gray-50 border-2 border-dashed border-gray-200 rounded-[40px] items-center justify-center overflow-hidden mb-10 shadow-sm"
+            activeOpacity={0.9}
+            className="w-full h-64 bg-slate-50 border-2 border-dashed border-slate-200 rounded-[40px] items-center justify-center overflow-hidden mb-8 shadow-sm"
           >
             {image ? (
-              <View className="w-full h-full relative">
+              <View className="relative w-full h-full">
                 <Image source={{ uri: image }} className="w-full h-full" />
                 <TouchableOpacity
                   onPress={() => setImage(null)}
-                  className="absolute top-5 right-5 bg-black/60 p-2 rounded-full"
+                  className="absolute p-2 rounded-full top-4 right-4 bg-black/50"
                 >
                   <X size={20} color="white" />
                 </TouchableOpacity>
               </View>
             ) : (
               <View className="items-center">
-                <View className="bg-blue-100 p-6 rounded-full mb-4">
-                  <Camera size={40} color="#2563eb" />
+                <View className="p-5 mb-3 rounded-full bg-blue-50">
+                  <Camera size={35} color="#1A3BA0" />
                 </View>
-                <Text className="text-gray-800 text-xl font-bold">Add Photo</Text>
-                <Text className="text-gray-400 mt-1">Snap a photo of your item</Text>
+                <Text className="text-lg font-bold text-slate-800">Add Item Photo</Text>
+                <Text className="mt-1 text-xs text-slate-400">Tap to open Camera or Gallery</Text>
               </View>
             )}
           </TouchableOpacity>
 
-          {/* 3. Details Section - Input Fields Grouping */}
+          {/* --- 3. Form Details --- */}
           <View className="space-y-6">
             
-            {/* Item Details Group */}
+            {/* Item Info Section */}
             <View>
-              <Text className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 mb-3">Item Information</Text>
+              <Text className="text-[10px] font-black text-slate-400 uppercase tracking-[2px] ml-1 mb-3">Item Details</Text>
               <InputField
                 label="Item Title"
                 placeholder="What are you selling?"
                 value={title}
                 onChangeText={setTitle}
-                icon={<Type size={20} color="#9CA3AF" />}
+                icon={<Type size={20} color="#94a3b8" />}
               />
 
               <InputField
                 label="Price (LKR)"
-                placeholder="Set a fair price"
+                placeholder="Ex: 15,500"
                 value={price}
                 onChangeText={setPrice}
                 keyboardType="numeric"
-                icon={<DollarSign size={20} color="#9CA3AF" />}
+                icon={<DollarSign size={20} color="#94a3b8" />}
               />
 
-              {/* Category Selection */}
-              <View className="mb-5">
-                <Text className="mb-2 font-semibold text-gray-700 ml-1">Category</Text>
+              {/* Category Dropdown */}
+              <View className="mb-4">
+                <Text className="mb-2 ml-1 text-xs font-bold text-slate-700">Category</Text>
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  className="flex-row items-center justify-between px-5 h-16 border border-gray-100 rounded-3xl bg-gray-50 shadow-sm"
+                  className="flex-row items-center justify-between h-16 px-5 border border-slate-100 rounded-3xl bg-slate-50"
                   onPress={() => setIsModalVisible(true)}
                 >
                   <View className="flex-row items-center">
-                    <Tag size={20} color="#9CA3AF" className="mr-3" />
-                    <Text className={category ? "text-gray-800 font-medium text-base" : "text-gray-400 text-base"}>
-                      {category || "Select Category"}
+                    <Tag size={20} color="#94a3b8" className="mr-3" />
+                    <Text className={category ? "text-slate-800 font-semibold" : "text-slate-400"}>
+                      {category || "Select a Category"}
                     </Text>
                   </View>
-                  <ChevronDown size={20} color="#9CA3AF" />
+                  <ChevronDown size={20} color="#94a3b8" />
                 </TouchableOpacity>
               </View>
             </View>
 
-            {/* Seller Contact Group */}
-            <View className="mt-4">
-              <Text className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 mb-3">Contact Details</Text>
+            {/* Contact Section */}
+            <View>
+              <Text className="text-[10px] font-black text-slate-400 uppercase tracking-[2px] ml-1 mb-3">Seller Contact</Text>
               <InputField
                 label="Phone Number"
                 placeholder="07x xxxxxxx"
                 value={number}
                 onChangeText={setNumber}
                 keyboardType="phone-pad"
-                icon={<Phone size={20} color="#9CA3AF" />}
+                icon={<Phone size={20} color="#94a3b8" />}
               />
             </View>
 
-            {/* Description Group */}
-            <View className="mt-4 mb-8">
-              <Text className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 mb-3">Description</Text>
-              <View className="px-5 py-4 border border-gray-100 rounded-[30px] bg-gray-50 h-40 shadow-sm">
+            {/* Description Section */}
+            <View>
+              <Text className="text-[10px] font-black text-slate-400 uppercase tracking-[2px] ml-1 mb-3">More Info</Text>
+              <View className="px-1 py-1 border border-slate-100 rounded-[35px] bg-slate-50 h-40">
                 <InputField
-                  placeholder="Describe your item's condition, features, etc."
+                  placeholder="Describe your item condition, features, etc..."
                   multiline
                   numberOfLines={5}
                   value={description}
                   onChangeText={setDescription}
-                  style={{ textAlignVertical: "top", fontSize: 16 }}
+                  style={{ textAlignVertical: "top", paddingTop: 15, fontSize: 15 }}
+                  icon={<AlignLeft size={20} color="#94a3b8" />}
                 />
               </View>
             </View>
 
-            {/* Post Button */}
-            <View className="mt-4 shadow-xl shadow-blue-200">
-              <CustomButton title="Post Advertisement" onPress={handlePostItem} />
+            {/* Submit Button */}
+            <View className="mt-6 shadow-xl shadow-blue-200">
+              <TouchableOpacity
+                disabled={isLoading}
+                onPress={handlePostItem}
+                activeOpacity={0.8}
+                className={`bg-[#1A3BA0] h-16 rounded-3xl items-center justify-center flex-row`}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <>
+                    <Text className="mr-2 text-lg font-black text-white">Publish Advertisement</Text>
+                  </>
+                )}
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
 
+      {/* --- Category Modal --- */}
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
-        <View className="flex-1 justify-end bg-black/40">
-          <View className="bg-white rounded-t-[50px] p-8 h-[60%] shadow-2xl">
-            <View className="w-12 h-1.5 bg-gray-200 rounded-full self-center mb-6" />
-            <View className="flex-row justify-between items-center mb-8">
-              <Text className="text-2xl font-black text-gray-800">Category</Text>
-              <TouchableOpacity onPress={() => setIsModalVisible(false)} className="bg-gray-100 p-2 rounded-full">
-                <X size={20} color="#6B7280" />
+        <View className="justify-end flex-1 bg-black/40">
+          <View className="bg-white rounded-t-[50px] p-8 h-[65%] shadow-2xl">
+            <View className="w-12 h-1.5 bg-slate-100 rounded-full self-center mb-6" />
+            <View className="flex-row items-center justify-between mb-8">
+              <Text className="text-2xl font-black text-slate-800">Select Category</Text>
+              <TouchableOpacity onPress={() => setIsModalVisible(false)} className="p-2 rounded-full bg-slate-50">
+                <X size={20} color="#64748b" />
               </TouchableOpacity>
             </View>
 
@@ -269,10 +282,10 @@ function AddItem() {
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  className={`py-5 px-6 mb-3 rounded-2xl ${category === item ? "bg-blue-600" : "bg-gray-50"}`}
+                  className={`py-5 px-8 mb-3 rounded-2xl ${category === item ? "bg-[#1A3BA0]" : "bg-slate-50"}`}
                   onPress={() => { setCategory(item); setIsModalVisible(false); }}
                 >
-                  <Text className={`text-lg font-bold ${category === item ? "text-white" : "text-gray-600"}`}>
+                  <Text className={`text-lg font-bold ${category === item ? "text-white" : "text-slate-600"}`}>
                     {item}
                   </Text>
                 </TouchableOpacity>
@@ -281,7 +294,7 @@ function AddItem() {
           </View>
         </View>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -8,9 +8,10 @@ import {
   ActivityIndicator,
   RefreshControl,
   Alert,
+  StatusBar,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { Bell, LayoutGrid, Trash2, Edit, Eye } from "lucide-react-native";
+import { Bell, LayoutGrid, Hexagon, Plus } from "lucide-react-native";
 
 import PostCard from "@/src/Components/PostCard";
 import { useAuth } from "@/src/Context/AuthContext";
@@ -50,23 +51,10 @@ function MyAdds() {
       "Manage Ad",
       "What would you like to do with this advertisement?",
       [
-        {
-          text: "View Ad",
-          onPress: () => router.push(`/listing/${item.id}`),
-        },
-        {
-          text: "Edit Ad",
-          onPress: () => router.push(`/listing/edit/${item.id}`),
-        },
-        {
-          text: "Delete Ad",
-          style: "destructive",
-          onPress: () => confirmDelete(item.id),
-        },
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
+        { text: "View Ad", onPress: () => router.push(`/listing/${item.id}`) },
+        { text: "Edit Ad", onPress: () => router.push(`/listing/edit/${item.id}`) },
+        { text: "Delete Ad", style: "destructive", onPress: () => confirmDelete(item.id) },
+        { text: "Cancel", style: "cancel" },
       ]
     );
   };
@@ -98,36 +86,56 @@ function MyAdds() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 px-6 pt-4 mt-8">
-        
-        {/* 1. Header Section */}
-        <View className="flex-row items-center justify-between mb-8">
-          <View>
-            <Text className="text-base font-medium text-gray-400">Welcome back,</Text>
-            <Text className="text-3xl font-black leading-9 text-slate-900">My Ads</Text>
+    <View className="flex-1 bg-white">
+      <StatusBar barStyle="light-content" backgroundColor="#1A3BA0" />
+
+      {/* --- 1. Top Branded Header (Consistent with Home/Add) --- */}
+      <View className="bg-[#1A3BA0] pt-14 pb-20 px-8 rounded-b-[45px] shadow-2xl">
+        <View className="flex-row items-center justify-between">
+          <View className="flex-row items-center">
+            <View className="p-2 mr-4 border bg-white/10 rounded-xl border-white/20">
+              <Hexagon size={28} color="white" />
+            </View>
+            <View>
+              <Text className="text-sm font-bold tracking-widest uppercase text-blue-100/70">Your Inventory</Text>
+              <Text className="text-3xl font-black tracking-tight text-white">My Ads</Text>
+            </View>
           </View>
-          <TouchableOpacity className="p-3 bg-slate-100 rounded-2xl">
-            <Bell size={24} color="#1e293b" />
+          <TouchableOpacity 
+            onPress={() => router.push("/add-item")}
+            className="p-3 border bg-white/10 rounded-2xl border-white/20"
+          >
+            <Plus size={24} color="white" />
           </TouchableOpacity>
         </View>
+      </View>
 
-        <View className="bg-blue-600 p-6 rounded-[32px] mb-8 shadow-xl shadow-blue-200 flex-row justify-between items-center">
+      {/* --- 2. Floating Summary Card --- */}
+      <View className="px-8 -mt-10">
+        <View className="flex-row items-center justify-between p-6 bg-white border shadow-xl rounded-3xl shadow-slate-400 border-slate-50">
           <View>
-            <Text className="text-sm font-bold tracking-wider text-blue-100 uppercase">Total Listings</Text>
-            <Text className="mt-1 text-4xl font-black text-white">{posts.length}</Text>
+            <Text className="text-xs font-bold tracking-widest uppercase text-slate-400">Active Listings</Text>
+            <Text className="mt-1 text-4xl font-black text-slate-900">{posts.length}</Text>
           </View>
-          <View className="p-4 bg-white/20 rounded-3xl">
-            <LayoutGrid size={32} color="white" />
+          <View className="p-4 bg-blue-50 rounded-3xl">
+            <LayoutGrid size={32} color="#1A3BA0" />
           </View>
         </View>
+      </View>
 
-        {/* 3. List Section */}
-        <Text className="px-1 mb-4 text-xl font-black text-slate-900">Manage Listings</Text>
+      {/* --- 3. Listings Grid --- */}
+      <View className="flex-1 px-6 mt-8">
+        <View className="flex-row items-center justify-between px-1 mb-4">
+          <Text className="text-xl font-black text-slate-900">Manage Items</Text>
+          <TouchableOpacity onPress={onRefresh}>
+             <Text className="text-xs font-bold text-blue-600 uppercase">Refresh</Text>
+          </TouchableOpacity>
+        </View>
         
         {loading && !refreshing ? (
-          <View className="justify-center flex-1">
-            <ActivityIndicator size="large" color="#2563eb" />
+          <View className="items-center justify-center flex-1">
+            <ActivityIndicator size="large" color="#1A3BA0" />
+            <Text className="mt-4 font-medium text-slate-400">Syncing your ads...</Text>
           </View>
         ) : (
           <FlatList
@@ -138,7 +146,11 @@ function MyAdds() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 40 }}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#2563eb" />
+              <RefreshControl 
+                refreshing={refreshing} 
+                onRefresh={onRefresh} 
+                tintColor="#1A3BA0" 
+              />
             }
             renderItem={({ item }) => (
               <PostCard
@@ -147,25 +159,25 @@ function MyAdds() {
               />
             )}
             ListEmptyComponent={
-              <View className="items-center mt-20">
-                <View className="p-10 mb-4 rounded-full bg-slate-50">
+              <View className="items-center justify-center px-10 mt-20">
+                <View className="p-10 mb-6 rounded-full bg-slate-50">
                     <LayoutGrid size={48} color="#cbd5e1" />
                 </View>
                 <Text className="text-lg font-bold text-center text-slate-400">
-                  You haven't posted any ads yet.
+                  No advertisements yet.
                 </Text>
                 <TouchableOpacity 
                     onPress={() => router.push("/add-item")}
-                    className="mt-4"
+                    className="mt-5 bg-[#1A3BA0] px-8 py-4 rounded-2xl shadow-lg shadow-blue-200"
                 >
-                    <Text className="text-base font-black text-blue-600">Create your first ad</Text>
+                    <Text className="font-black text-white">Create New Ad</Text>
                 </TouchableOpacity>
               </View>
             }
           />
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

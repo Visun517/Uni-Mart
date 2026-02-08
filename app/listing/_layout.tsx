@@ -4,7 +4,7 @@ export default function ListingLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="[id]" />
-      <Stack.Screen name="edit-[id]" />
+      <Stack.Screen name="edit/[id]" />
     </Stack>
   );
 }

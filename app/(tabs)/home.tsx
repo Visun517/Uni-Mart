@@ -69,35 +69,44 @@ function Home() {
   }, [posts, selectedCategory, searchQuery]);
 
   return (
-    <SafeAreaView className="flex-1 bg-white pt-10 mt-2">
-      <View className="px-6 flex-1">
-        {/* Header */}
-        <View className="flex-row justify-between items-center mb-6">
+    <SafeAreaView className="flex-1 bg-white">
+      {/* --- 1. Modern Branded Header --- */}
+      <View className="bg-[#1A3BA0] pt-4 pb-12 px-8 rounded-b-[45px] shadow-2xl">
+        <View className="flex-row items-center justify-between mt-10">
           <View>
-            <Text className="text-gray-400 font-medium">Hello, 👋</Text>
-            <Text className="text-2xl font-black text-slate-900">
+            <Text className="text-sm font-bold tracking-widest uppercase text-blue-100/70">
+              Hello, 👋
+            </Text>
+            <Text className="text-3xl font-black tracking-tight text-white">
               {user?.displayName || "Uni-Mart User"}
             </Text>
           </View>
-          <TouchableOpacity className="bg-slate-100 p-3 rounded-full">
-            <Bell size={22} color="#1e293b" />
+          <TouchableOpacity className="p-3 border shadow-sm bg-white/10 rounded-2xl border-white/20">
+            <Bell size={24} color="white" />
           </TouchableOpacity>
         </View>
+      </View>
 
-        {/* Search Bar */}
-        <View className="flex-row items-center bg-slate-100 px-4 h-14 rounded-2xl mb-6">
-          <Search size={20} color="#94a3b8" />
+      {/* --- 2. Floating Search Bar --- */}
+      <View className="px-8 -mt-8 shadow-2xl shadow-slate-400">
+        <View className="flex-row items-center bg-white h-16 rounded-[25px] px-5 border border-slate-50">
+          <Search size={22} color="#94a3b8" />
           <TextInput
-            placeholder="Search items..."
-            className="flex-1 ml-3 text-slate-900 font-medium h-full"
+            placeholder="Search for essentials..."
+            className="flex-1 h-full ml-3 text-slate-800 font-semibold text-[16px]"
             placeholderTextColor="#94a3b8"
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
         </View>
+      </View>
 
-        {/* Categories */}
-        <View className="mb-6">
+      <View className="flex-1 px-6 mt-8">
+        {/* --- 3. Categories Horizontal Section --- */}
+        <View className="mb-8">
+          <Text className="text-xs font-bold text-slate-400 uppercase tracking-[2px] ml-1 mb-4">
+            Explore Categories
+          </Text>
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -106,14 +115,17 @@ function Home() {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => setSelectedCategory(item)}
-                className={`px-6 py-3 rounded-2xl mr-3 ${
+                activeOpacity={0.8}
+                className={`px-7 py-3.5 rounded-[20px] mr-3 shadow-sm ${
                   selectedCategory === item
-                    ? "bg-blue-600"
+                    ? "bg-[#1A3BA0] shadow-blue-400"
                     : "bg-slate-50 border border-slate-100"
                 }`}
               >
                 <Text
-                  className={`font-bold ${selectedCategory === item ? "text-white" : "text-slate-500"}`}
+                  className={`font-bold text-sm ${
+                    selectedCategory === item ? "text-white" : "text-slate-500"
+                  }`}
                 >
                   {item}
                 </Text>
@@ -122,9 +134,23 @@ function Home() {
           />
         </View>
 
-        {/* List */}
+        {/* --- 4. Main Feed Section --- */}
+        <View className="flex-row items-baseline justify-between px-1 mb-5">
+          <Text className="text-2xl font-black tracking-tight text-slate-900">
+            Recent Listings
+          </Text>
+          <Text className="text-xs font-bold uppercase text-slate-400">
+            {filteredPosts.length} items
+          </Text>
+        </View>
+
         {loading ? (
-          <ActivityIndicator size="large" color="#2563eb" className="mt-10" />
+          <View className="items-center justify-center flex-1 -mt-20">
+            <ActivityIndicator size="large" color="#1A3BA0" />
+            <Text className="mt-4 font-medium text-slate-400">
+              Fetching ads...
+            </Text>
+          </View>
         ) : (
           <FlatList
             data={filteredPosts}
@@ -132,9 +158,13 @@ function Home() {
             numColumns={2}
             columnWrapperStyle={{ justifyContent: "space-between" }}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
+            contentContainerStyle={{ paddingBottom: 30 }}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor="#1A3BA0"
+              />
             }
             renderItem={({ item }) => (
               <PostCard
@@ -143,10 +173,24 @@ function Home() {
               />
             )}
             ListEmptyComponent={
-              <View className="mt-10 items-center">
-                <Text className="text-gray-400">
-                  No items match your criteria.
+              <View className="items-center justify-center px-10 mt-20">
+                <View className="p-8 mb-5 rounded-full bg-slate-50">
+                  <Search size={40} color="#cbd5e1" />
+                </View>
+                <Text className="text-lg font-bold text-center text-slate-400">
+                  No items found match your search.
                 </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedCategory("All");
+                    setSearchQuery("");
+                  }}
+                  className="mt-4"
+                >
+                  <Text className="text-[#1A3BA0] font-black uppercase text-xs tracking-widest">
+                    Clear Filters
+                  </Text>
+                </TouchableOpacity>
               </View>
             }
           />

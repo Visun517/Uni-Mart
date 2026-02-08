@@ -2,10 +2,18 @@ import { createContext, use, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/src/Config/firebaseConfig";
 
+interface UserProfile {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  name?: string;
+  profilePic?: string;
+}
+
 interface AuthContextType {
-  user: any | null;
+  user: UserProfile | null;
   loading: boolean;
-  setUser: React.Dispatch<React.SetStateAction<any | null>>; 
+  setUser: React.Dispatch<React.SetStateAction<any | null>>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
