@@ -8,6 +8,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import { GetAllPosts } from "@/src/Service/PostService";
 import Post from "../../src/types/Post";
@@ -15,6 +16,7 @@ import PostCard from "@/src/Components/PostCard";
 import { Search, Bell } from "lucide-react-native";
 import { useAuth } from "@/src/Context/AuthContext";
 import { useRouter } from "expo-router";
+import { addToCart } from "@/src/Service/CartService";
 
 function Home() {
   const { user } = useAuth();
@@ -53,6 +55,15 @@ function Home() {
   const onRefresh = () => {
     setRefreshing(true);
     fetchPosts();
+  };
+
+  const handleAddToCart = async (post : Post) => {
+    try {
+      await addToCart(post);
+      Alert.alert("Success", "Item added to your cart!");
+    } catch (error) {
+      Alert.alert("Error", "Could not add to cart");
+    }
   };
 
   // Filter Logic
@@ -170,6 +181,7 @@ function Home() {
               <PostCard
                 post={item}
                 onPress={() => router.push(`/listing/${item.id}`)}
+                onAddToCart={() => handleAddToCart(item)}
               />
             )}
             ListEmptyComponent={

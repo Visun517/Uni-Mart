@@ -2,59 +2,38 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { MapPin, Heart, ShoppingBag } from 'lucide-react-native';
 
-const PostCard = ({ post, onPress }: any) => {
+const PostCard = ({ post, onPress, onAddToCart }: any) => { 
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={onPress}
       className="bg-white rounded-[32px] mb-6 overflow-hidden shadow-xl shadow-slate-200 border border-slate-50 w-[47%]"
     >
-      {/* Image Section */}
       <View className="relative">
-        <Image
-          source={{ uri: post.imageUrl }}
-          className="w-full h-48"
-          resizeMode="cover"
-        />
+        <Image source={{ uri: post.imageUrl }} className="w-full h-48" resizeMode="cover" />
         
-        {/* Floating Heart Icon - සාමාන්‍යයෙන් modern apps වල පවතින අංගයකි */}
-        {/* <TouchableOpacity 
-          className="absolute top-3 right-3 bg-white/60 p-2 rounded-full backdrop-blur-md"
-          onPress={() => console.log("Added to wishlist")}
+        {/* --- Add to Cart Floating Button --- */}
+        <TouchableOpacity 
+          className="absolute p-2 rounded-full shadow-sm top-3 right-3 bg-white/80 backdrop-blur-md"
+          onPress={onAddToCart} 
         >
-          <Heart size={16} color="#475569" />
-        </TouchableOpacity> */}
+          <ShoppingBag size={18} color="#1A3BA0" />
+        </TouchableOpacity>
 
-        {/* Category Badge */}
-        <View className="absolute bottom-3 left-3 bg-white/90 px-3 py-1 rounded-2xl shadow-sm">
-          <Text className="text-[10px] font-bold text-slate-800">
-            {post.category}
-          </Text>
+        <View className="absolute px-3 py-1 shadow-sm bottom-3 left-3 bg-white/90 rounded-2xl">
+          <Text className="text-[10px] font-bold text-slate-800">{post.category}</Text>
         </View>
       </View>
 
-      {/* Content Section */}
       <View className="p-4 bg-white">
-        {/* Title */}
-        <Text className="text-slate-900 font-bold text-base leading-5 mb-1" numberOfLines={1}>
+        <Text className="mb-1 text-base font-bold leading-5 text-slate-900" numberOfLines={1}>
           {post.title}
         </Text>
+        <Text className="text-lg font-black text-blue-600">Rs.{post.price.toLocaleString()}</Text>
 
-        {/* Price Tag */}
-        <View className="flex-row items-center justify-between">
-          <Text className="text-blue-600 font-black text-lg">
-            Rs.{post.price.toLocaleString()}
-          </Text>
-        </View>
-
-        {/* Location & Meta info */}
-        <View className="flex-row items-center mt-3 pt-3 border-t border-slate-50">
-          <View className="bg-slate-100 p-1 rounded-full mr-2">
-            <MapPin size={10} color="#64748b" />
-          </View>
-          <Text className="text-[10px] font-medium text-slate-400" numberOfLines={1}>
-            University Campus
-          </Text>
+        <View className="flex-row items-center pt-3 mt-3 border-t border-slate-50">
+          <MapPin size={10} color="#64748b" />
+          <Text className="text-[10px] font-medium text-slate-400 ml-1">University Campus</Text>
         </View>
       </View>
     </TouchableOpacity>
