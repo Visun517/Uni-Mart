@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { Mail, Lock, Eye, EyeOff, User, Hexagon } from "lucide-react-native";
 import { registation } from "@/src/Service/AuthService";
+import { showMessage } from "react-native-flash-message";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -29,29 +30,53 @@ function Register() {
 
   const handleRegister = async () => {
     if (!username || !email || !password || !confirmPassword) {
-      Alert.alert("Required", "Please fill in all the fields to create your account.");
+      showMessage({
+        message: "Required Fields",
+        description: "Please fill in all the fields to create your account.",
+        type: "warning", // success, info, warning, danger
+        icon: "warning",
+        backgroundColor: "#f59e0b",
+      });
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert("Match Error", "Passwords do not match. Please check again.");
+      showMessage({
+        message: "Match Error",
+        description: "Passwords do not match. Please check again.",
+        type: "warning", // success, info, warning, danger
+        icon: "warning",
+        backgroundColor: "#f59e0b",
+      });
       return;
     }
 
     try {
       await registation(username, email, password);
       Alert.alert("Success", "Welcome to Uni-Mart!");
+      showMessage({
+        message: "Registration Successful",
+        description: "Your account has been created successfully.",
+        type: "success", // success, info, warning, danger
+        icon: "success",
+        backgroundColor: "#10b981",
+      });
       router.replace("/home");
     } catch (error) {
       console.log(error);
-      Alert.alert("Registration Failed", "Something went wrong. Please try again.");
+       showMessage({
+        message: "Registration unsuccessful",
+        description: "Your account has not been created.",
+        type: "danger", // success, info, warning, danger
+        icon: "danger",
+        backgroundColor: "#ef4444",
+      });
     }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 bg-white">
-        {/* Status Bar සැකසුම */}
         <StatusBar barStyle="light-content" backgroundColor="#1A3BA0" />
 
         {/* --- 1. Top Blue Header Section --- */}
@@ -60,7 +85,9 @@ function Register() {
             <View className="p-4 mb-2 bg-white/10 rounded-[25px] border border-white/20">
               <Hexagon size={50} color="white" strokeWidth={1.5} />
             </View>
-            <Text className="text-4xl font-black tracking-tighter text-white">UniMart</Text>
+            <Text className="text-4xl font-black tracking-tighter text-white">
+              UniMart
+            </Text>
             <Text className="mt-1 text-[10px] font-bold tracking-[2px] uppercase text-blue-100/60">
               Campus Marketplace
             </Text>
@@ -79,7 +106,9 @@ function Register() {
           >
             <View className="bg-white rounded-[45px] p-6 shadow-2xl shadow-slate-400 border border-slate-50 mb-10">
               <View className="items-start mb-6 ml-1">
-                <Text className="text-3xl font-black text-slate-800">Get Started</Text>
+                <Text className="text-3xl font-black text-slate-800">
+                  Get Started
+                </Text>
                 <Text className="text-[15px] font-medium text-slate-400 mt-1">
                   Create your campus account today
                 </Text>

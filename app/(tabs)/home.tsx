@@ -17,6 +17,7 @@ import { Search, Bell } from "lucide-react-native";
 import { useAuth } from "@/src/Context/AuthContext";
 import { useRouter } from "expo-router";
 import { addToCart } from "@/src/Service/CartService";
+import { showMessage } from "react-native-flash-message";
 
 function Home() {
   const { user } = useAuth();
@@ -57,12 +58,24 @@ function Home() {
     fetchPosts();
   };
 
-  const handleAddToCart = async (post : Post) => {
+  const handleAddToCart = async (post: Post) => {
     try {
       await addToCart(post);
-      Alert.alert("Success", "Item added to your cart!");
+      showMessage({
+        message: "Success",
+        description: "Item added to your cart.",
+        type: "success", // success, info, warning, danger
+        icon: "success",
+        backgroundColor: "#10B981",
+      });
     } catch (error) {
-      Alert.alert("Error", "Could not add to cart");
+      showMessage({
+        message: "Error",
+        description: "Could not add item to cart.",
+        type: "danger", // success, info, warning, danger
+        icon: "danger",
+        backgroundColor: "#ef4444",
+      });
     }
   };
 
