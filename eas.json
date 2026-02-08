@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "version": ">= 7.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "AIzaSyAVfIDRumy946znNbjAJHcMhD00ZwG9Pss",
+        "EXPO_PUBLIC_AUTH_DOMAIN": "uni-mart-fc8bb.firebaseapp.com",
+        "EXPO_PUBLIC_PROJECT_ID": "uni-mart-fc8bb",
+        "EXPO_PUBLIC_STORAGE_BUCKET": "uni-mart-fc8bb.firebasestorage.app",
+        "EXPO_PUBLIC_MESSAGING_SENDER_ID": "872105656416",
+        "EXPO_PUBLIC_APP_ID": "1:872105656416:web:80b1fda8adc5d5346cc305",
+        "MEASUREMENT_ID": "G-ZTJ2L9791J",
+        "EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME": "dpgwzf5hi",
+        "EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET": "uni-mart",
+        "EXPO_PUBLIC_WEB_CLIENT_ID": "872105656416-uq70bgsv2l5s3vsfko86sup95pp2jofj.apps.googleusercontent.com",
+        "EXPO_PUBLIC_ANDROID_CLIENT_ID": "872105656416-02qua7061tdnm5u5idtihm80f8ko35d4.apps.googleusercontent.com",
+        "EXPO_PUBLIC_IOS_CLIENT_ID": "872105656416-e68sshmdrm86v3qskqlt5a0dbrhbc406.apps.googleusercontent.com"
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

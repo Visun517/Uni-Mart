@@ -13,8 +13,9 @@ import {
   Platform,
   ScrollView,
   Alert,
+  StatusBar,
 } from "react-native";
-import { Mail, Lock, Eye, EyeOff, User } from "lucide-react-native";
+import { Mail, Lock, Eye, EyeOff, User, Hexagon } from "lucide-react-native";
 import { registation } from "@/src/Service/AuthService";
 
 function Register() {
@@ -49,114 +50,128 @@ function Register() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView className="flex-1 bg-white">
+      <View className="flex-1 bg-white">
+        {/* Status Bar සැකසුම */}
+        <StatusBar barStyle="light-content" backgroundColor="#1A3BA0" />
+
+        {/* --- 1. Top Blue Header Section --- */}
+        <View className="bg-[#1A3BA0] h-[30%] items-center justify-center rounded-b-[65px] shadow-2xl">
+          <View className="items-center mt-4">
+            <View className="p-4 mb-2 bg-white/10 rounded-[25px] border border-white/20">
+              <Hexagon size={50} color="white" strokeWidth={1.5} />
+            </View>
+            <Text className="text-4xl font-black tracking-tighter text-white">UniMart</Text>
+            <Text className="mt-1 text-[10px] font-bold tracking-[2px] uppercase text-blue-100/60">
+              Campus Marketplace
+            </Text>
+          </View>
+        </View>
+
+        {/* --- 2. Form Section (Overlapping Card) --- */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          className="flex-1"
+          className="flex-1 -mt-12"
         >
           <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
             className="px-8"
           >
-            {/* --- 1. Header Section  --- */}
-            <View className="mt-40 ">
-              <View className="flex-row items-center mb-2">
-                <Text className="text-5xl font-black text-blue-600">Uni</Text>
-                <Text className="text-5xl font-black text-slate-800">Mart</Text>
-              </View>
-              <Text className="text-lg font-medium tracking-tight text-gray-400">
-                Create an account and start trading today.
-              </Text>
-            </View>
-
-            {/* --- 2. Form Section --- */}
-            <View className="space-y-5">
-              <InputField
-                label="Full Name"
-                placeholder="Ex: John Doe"
-                value={username}
-                onChangeText={setUsername}
-                icon={<User size={20} color="#64748b" />}
-              />
-
-              <InputField
-                label="University Email"
-                placeholder="name@university.ac.lk"
-                value={email}
-                onChangeText={setEmail}
-                icon={<Mail size={20} color="#64748b" />}
-                autoCapitalize="none"
-                keyboardType="email-address"
-              />
-
-              {/* Password Field */}
-              <View className="relative">
-                <InputField
-                  label="Password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!isPasswordVisible}
-                  icon={<Lock size={20} color="#64748b" />}
-                />
-                <TouchableOpacity
-                  className="absolute right-4 top-11"
-                  onPress={() => setIsPasswordVisible(!isPasswordVisible)}
-                >
-                  {isPasswordVisible ? (
-                    <EyeOff size={22} color="#94a3b8" />
-                  ) : (
-                    <Eye size={22} color="#94a3b8" />
-                  )}
-                </TouchableOpacity>
-              </View>
-
-              {/* Confirm Password Field */}
-              <View className="relative">
-                <InputField
-                  label="Confirm Password"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                  secureTextEntry={!isConfirmVisible}
-                  icon={<Lock size={20} color="#64748b" />}
-                />
-                <TouchableOpacity
-                  className="absolute right-4 top-11"
-                  onPress={() => setIsConfirmVisible(!isConfirmVisible)}
-                >
-                  {isConfirmVisible ? (
-                    <EyeOff size={22} color="#94a3b8" />
-                  ) : (
-                    <Eye size={22} color="#94a3b8" />
-                  )}
-                </TouchableOpacity>
-              </View>
-
-              {/* Register Button with Shadow */}
-              <View className="mt-6 shadow-xl shadow-blue-200">
-                <CustomButton
-                  title="Create Account"
-                  onPress={handleRegister}
-                />
-              </View>
-            </View>
-
-            {/* --- 3. Footer Section --- */}
-            <View className="flex-row justify-center mt-10 mb-8">
-              <Text className="text-base font-medium text-slate-500">
-                Already have an account?{" "}
-              </Text>
-              <TouchableOpacity onPress={() => router.push("/login")}>
-                <Text className="text-base font-extrabold text-blue-600">
-                  Sign In
+            <View className="bg-white rounded-[45px] p-6 shadow-2xl shadow-slate-400 border border-slate-50 mb-10">
+              <View className="items-start mb-6 ml-1">
+                <Text className="text-3xl font-black text-slate-800">Get Started</Text>
+                <Text className="text-[15px] font-medium text-slate-400 mt-1">
+                  Create your campus account today
                 </Text>
-              </TouchableOpacity>
+              </View>
+
+              <View className="space-y-4">
+                <InputField
+                  label="Full Name"
+                  placeholder="Ex: John Doe"
+                  value={username}
+                  onChangeText={setUsername}
+                  icon={<User size={18} color="#64748b" />}
+                />
+
+                <InputField
+                  label="University Email"
+                  placeholder="name@university.ac.lk"
+                  value={email}
+                  onChangeText={setEmail}
+                  icon={<Mail size={18} color="#64748b" />}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+
+                {/* Password Field */}
+                <View className="relative">
+                  <InputField
+                    label="Password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!isPasswordVisible}
+                    icon={<Lock size={18} color="#64748b" />}
+                  />
+                  <TouchableOpacity
+                    className="absolute right-4 top-11"
+                    onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+                  >
+                    {isPasswordVisible ? (
+                      <EyeOff size={20} color="#94a3b8" />
+                    ) : (
+                      <Eye size={20} color="#94a3b8" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+
+                {/* Confirm Password Field */}
+                <View className="relative">
+                  <InputField
+                    label="Confirm Password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry={!isConfirmVisible}
+                    icon={<Lock size={18} color="#64748b" />}
+                  />
+                  <TouchableOpacity
+                    className="absolute right-4 top-11"
+                    onPress={() => setIsConfirmVisible(!isConfirmVisible)}
+                  >
+                    {isConfirmVisible ? (
+                      <EyeOff size={20} color="#94a3b8" />
+                    ) : (
+                      <Eye size={20} color="#94a3b8" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+
+                {/* Register Button */}
+                <View className="mt-4 shadow-lg shadow-blue-300">
+                  <CustomButton
+                    title="Create Account"
+                    onPress={handleRegister}
+                  />
+                </View>
+              </View>
+
+              {/* --- 3. Footer Section --- */}
+              <View className="flex-row justify-center mt-8 mb-2">
+                <Text className="text-base font-medium text-slate-500">
+                  Already a member?{" "}
+                </Text>
+                <TouchableOpacity onPress={() => router.push("/login")}>
+                  <Text className="text-base font-bold text-[#1A3BA0]">
+                    Sign In
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
